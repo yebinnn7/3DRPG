@@ -50,7 +50,9 @@ public class PlayerMove : MonoBehaviour
         {
             dir.Normalize();
             // transform.forward = dir;
-            transform.forward = Vector3.Lerp(transform.forward, dir, rotSpeed * Time.deltaTime);
+            // 자연스러운 선형보간 // 짐벌락현상에 문제 있음
+            // transform.forward = Vector3.Lerp(transform.forward, dir, rotSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), rotSpeed * Time.deltaTime);
         }
         // 중력속도 계산
         yVelocity += gravity * Time.deltaTime;
@@ -61,6 +63,8 @@ public class PlayerMove : MonoBehaviour
         // p = p0 + VT (v = s*d)
         // transform.position += speed * (h * transform.right + v * transform.forward).normalized * Time.deltaTime;
         // cc.SimpleMove(speed * (h * transform.right + v * transform.forward).normalized);
+        // 속도 * 시간
+        // (속력 * 방향) * 시간
         cc.Move(speed * dir * Time.deltaTime);
     }
 }
